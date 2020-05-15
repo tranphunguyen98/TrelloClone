@@ -1,5 +1,6 @@
 package nguyen.trelloclone
 
+import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,5 +21,9 @@ class IntroActivity : AppCompatActivity() {
 
         val typeface = Typeface.createFromAsset(assets,"carbon bl.ttf" )
         tv_app_name_intro.typeface = typeface
+
+        btn_sign_up_intro.setOnClickListener {
+            startActivity(Intent(this@IntroActivity,SignUpActivity::class.java))
+        }
     }
 }

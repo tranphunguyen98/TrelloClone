@@ -15,4 +15,32 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="btn_rounded">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/shape_button_rounded</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textSize">@dimen/btn_text_size</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_marginStart">@dimen/btn_marginStartEnd</item>
+        <item name="android:layout_marginEnd">@dimen/btn_marginStartEnd</item>
+        <item name="android:paddingTop">@dimen/btn_paddingTopBottom</item>
+        <item name="android:paddingBottom">@dimen/btn_paddingTopBottom</item>
+    </style>
+
+    <style name="btn_rounded_border">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginStart">@dimen/btn_marginStartEnd</item>
+        <item name="android:layout_marginEnd">@dimen/btn_marginStartEnd</item>
+        <item name="android:background">@drawable/white_border_shape_button_rounded</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">@dimen/btn_paddingTopBottom</item>
+        <item name="android:paddingBottom">@dimen/btn_paddingTopBottom</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/btn_text_size</item>
+    </style>
 </resources>
