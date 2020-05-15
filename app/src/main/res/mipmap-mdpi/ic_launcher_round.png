@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e0b2ddc2-5108-4922-982c-b35c075316d7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/assets/markdown/singleton.md" beforeDir="false" afterPath="$PROJECT_DIR$/assets/markdown/singleton.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/data/repositories/markdown_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/repositories/markdown_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/router.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/router.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/design_pattern_details/design_pattern_details.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/design_pattern_details/design_pattern_details.dart" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.dart_tool/" />
+    <ignored path="$PROJECT_DIR$/.idea/" />
+    <ignored path="$PROJECT_DIR$/.pub/" />
+    <ignored path="$PROJECT_DIR$/build/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_3a_API_28" />
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/screens/design_pattern_details/design_pattern_details.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="92" column="20" selection-start-line="92" selection-start-column="20" selection-end-line="92" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/design_patterns/singleton/example_state.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="24">
+              <caret line="1" selectio
