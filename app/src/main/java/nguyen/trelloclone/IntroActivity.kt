@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
+import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class IntroActivity : AppCompatActivity() {
@@ -18,5 +19,6 @@ class IntroActivity : AppCompatActivity() {
         )
 
         val typeface = Typeface.createFromAsset(assets,"carbon bl.ttf" )
+        tv_app_name_intro.typeface = typeface
     }
 }
