@@ -18,8 +18,7 @@
     <dimen name="btn_text_size">18sp</dimen>
 
 
-    <!--TODO (Step 5: Add all the dimen values here.)-->
-    <!--START-->
+    <!--Sign Up -->
     <dimen name="sign_up_screen_btn_marginTop">30dp</dimen>
     <dimen name="toolbar_title_text_size">18sp</dimen>
     <dimen name="authentication_screen_content_marginTop">40dp</dimen>
@@ -32,5 +31,6 @@
     <dimen name="authentication_screen_til_marginStartEnd">16dp</dimen>
     <dimen name="et_text_size">16sp</dimen>
     <dimen name="authentication_screen_til_marginTop">20dp</dimen>
-    <!--END-->
+
+    <dimen name="authentication_screen_marginTop">60dp</dimen>
 </resources>
