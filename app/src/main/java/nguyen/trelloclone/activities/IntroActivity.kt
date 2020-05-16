@@ -1,4 +1,4 @@
-package nguyen.trelloclone
+package nguyen.trelloclone.activities
 
 import android.content.Intent
 import android.graphics.Typeface
@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import kotlinx.android.synthetic.main.activity_intro.*
-import kotlinx.android.synthetic.main.activity_splash.*
+import nguyen.trelloclone.R
 
 class IntroActivity : AppCompatActivity() {
 
@@ -23,11 +23,13 @@ class IntroActivity : AppCompatActivity() {
         tv_app_name_intro.typeface = typeface
 
         btn_sign_in_intro.setOnClickListener {
-            startActivity(Intent(this@IntroActivity,SignInActivity::class.java))
+            startActivity(Intent(this@IntroActivity,
+                SignInActivity::class.java))
         }
 
         btn_sign_up_intro.setOnClickListener {
-            startActivity(Intent(this@IntroActivity,SignUpActivity::class.java))
+            startActivity(Intent(this@IntroActivity,
+                SignUpActivity::class.java))
         }
     }
 }

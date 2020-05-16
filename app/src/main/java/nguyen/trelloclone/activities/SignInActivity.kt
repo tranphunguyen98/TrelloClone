@@ -1,15 +1,16 @@
-package nguyen.trelloclone
+package nguyen.trelloclone.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
-import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.activity_sign_in.*
+import nguyen.trelloclone.R
 
-class SignUpActivity : AppCompatActivity() {
+class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        setContentView(R.layout.activity_sign_in)
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -20,15 +21,14 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun setUpToolBar() {
-        setSupportActionBar(toolbar_sign_up_activity)
+        setSupportActionBar(toolbar_sign_in_activity)
         supportActionBar?.also {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.ic_back_color_black_24dp)
         }
-        
-        toolbar_sign_up_activity.setNavigationOnClickListener {
+
+        toolbar_sign_in_activity.setNavigationOnClickListener {
             onBackPressed()
         }
     }
-
 }

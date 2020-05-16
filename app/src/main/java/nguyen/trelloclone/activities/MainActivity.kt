@@ -1,7 +1,8 @@
-package nguyen.trelloclone
+package nguyen.trelloclone.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import nguyen.trelloclone.R
 
 class MainActivity : AppCompatActivity() {
 
