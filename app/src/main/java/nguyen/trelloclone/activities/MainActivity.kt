@@ -6,16 +6,22 @@ import android.os.Bundle
 import android.view.Gravity
 import android.widget.Toast
 import androidx.core.view.GravityCompat
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import nguyen.trelloclone.R
+import nguyen.trelloclone.firebase.FirestoreClass
+import nguyen.trelloclone.models.User
 
 class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        FirestoreClass().signIn(this)
 
         setUpActionBar()
 
@@ -43,6 +49,16 @@ class MainActivity : BaseActivity() {
         } else {
             doubleBackToExit()
         }
+    }
+
+    fun updateNavigationUserDetails(user: User) {
+        Glide.with(this@MainActivity)
+            .load(user.image)
+            .centerCrop()
+            .placeholder(R.drawable.ic_user_place_holder)
+            .into(iv_user_image)
+
+        tv_username.text = user.name
     }
 
     private fun setUpActionBar() {
