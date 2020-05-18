@@ -10,6 +10,8 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import nguyen.trelloclone.R
+import nguyen.trelloclone.firebase.FirestoreClass
+import nguyen.trelloclone.models.User
 
 class SignInActivity : BaseActivity() {
 
@@ -45,6 +47,13 @@ class SignInActivity : BaseActivity() {
         }
     }
 
+    fun signInSuccess(user: User) {
+        hideProgressDialog()
+        Toast.makeText(this, "Successful", Toast.LENGTH_LONG).show()
+        auth.signOut()
+        startActivity(Intent(this, MainActivity::class.java))
+    }
+
     private fun signIn() {
         val email: String = et_email_sign_in.text.toString().trim { it <= ' ' }
         val password: String = et_password_sign_in.text.toString().trim { it <= ' ' }
@@ -55,13 +64,11 @@ class SignInActivity : BaseActivity() {
             auth
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-                    hideProgressDialog()
 
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "Successful", Toast.LENGTH_LONG).show()
-                        auth.signOut()
-                        startActivity(Intent(this, MainActivity::class.java))
+                       FirestoreClass().signIn(this)
                     } else {
+                        hideProgressDialog()
                         Toast.makeText(
                             this@SignInActivity,
                             task.exception!!.message,
