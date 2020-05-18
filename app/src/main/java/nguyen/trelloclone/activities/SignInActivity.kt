@@ -1,14 +1,12 @@
 package nguyen.trelloclone.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.WindowManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_in.*
-import kotlinx.android.synthetic.main.activity_sign_up.*
 import nguyen.trelloclone.R
 import nguyen.trelloclone.firebase.FirestoreClass
 import nguyen.trelloclone.models.User
@@ -66,7 +64,7 @@ class SignInActivity : BaseActivity() {
                 .addOnCompleteListener { task ->
 
                     if (task.isSuccessful) {
-                       FirestoreClass().signIn(this)
+                       FirestoreClass().loadUserData(this)
                     } else {
                         hideProgressDialog()
                         Toast.makeText(

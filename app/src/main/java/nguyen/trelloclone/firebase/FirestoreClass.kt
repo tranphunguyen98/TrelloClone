@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import nguyen.trelloclone.activities.MainActivity
+import nguyen.trelloclone.activities.MyProfileActivity
 import nguyen.trelloclone.activities.SignInActivity
 import nguyen.trelloclone.activities.SignUpActivity
 import nguyen.trelloclone.models.User
@@ -14,7 +15,7 @@ import nguyen.trelloclone.utils.Constants
 class FirestoreClass {
     private val fireStore = FirebaseFirestore.getInstance()
 
-    fun signIn(activity: Activity) {
+    fun loadUserData(activity: Activity) {
         fireStore.collection(Constants.USERS)
             .document(getCurrentUserID())
             .get()
@@ -27,6 +28,9 @@ class FirestoreClass {
                         }
                         is MainActivity -> {
                             activity.updateNavigationUserDetails(userLogged)
+                        }
+                        is MyProfileActivity -> {
+                            activity.setDataUserOnUI(userLogged)
                         }
                     }
                 }
