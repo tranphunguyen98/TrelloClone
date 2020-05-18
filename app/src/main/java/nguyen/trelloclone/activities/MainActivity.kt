@@ -28,7 +28,7 @@ class MainActivity : BaseActivity() {
         nav_view.setNavigationItemSelectedListener {menu ->
             when(menu.itemId) {
                 R.id.nav_my_profile -> {
-                    Toast.makeText(this@MainActivity, "Profile", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this,MyProfileActivity::class.java))
                 }
                 R.id.nav_sign_out -> {
                     FirebaseAuth.getInstance().signOut()
