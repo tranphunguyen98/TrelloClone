@@ -7,8 +7,11 @@ import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import nguyen.trelloclone.R
+import nguyen.trelloclone.firebase.FirestoreClass
+import nguyen.trelloclone.models.User
 
 class SignUpActivity : BaseActivity() {
 
@@ -40,6 +43,13 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
+    fun userRegisteredSuccess() {
+        hideProgressDialog()
+        Toast.makeText(this, "Successful", Toast.LENGTH_LONG).show()
+        FirebaseAuth.getInstance().signOut()
+        finish()
+    }
+
     private fun registerUser() {
         val name: String = et_name.text.toString().trim()
         val email: String = et_email.text.toString().trim { it <= ' ' }
@@ -51,13 +61,14 @@ class SignUpActivity : BaseActivity() {
             FirebaseAuth.getInstance()
                 .createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-                    hideProgressDialog()
-
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "Successful", Toast.LENGTH_LONG).show()
-                        FirebaseAuth.getInstance().signOut()
-                        finish()
+                        val firebaseUser: FirebaseUser = task.result!!.user!!
+
+                        val userInfo = User(id = firebaseUser.uid, name = name, email = email)
+
+                        FirestoreClass().registerUser(this, userInfo)
                     } else {
+                        hideProgressDialog()
                         Toast.makeText(
                             this@SignUpActivity,
                             task.exception!!.message,
