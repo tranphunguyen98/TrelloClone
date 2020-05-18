@@ -46,7 +46,6 @@ class SignUpActivity : BaseActivity() {
     fun userRegisteredSuccess() {
         hideProgressDialog()
         Toast.makeText(this, "Successful", Toast.LENGTH_LONG).show()
-        FirebaseAuth.getInstance().signOut()
         finish()
     }
 

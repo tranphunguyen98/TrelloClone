@@ -5,9 +5,11 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.WindowManager.LayoutParams.*
 import kotlinx.android.synthetic.main.activity_splash.*
 import nguyen.trelloclone.R
+import nguyen.trelloclone.firebase.FirestoreClass
 
 class SplashActivity : AppCompatActivity() {
 
@@ -20,12 +22,19 @@ class SplashActivity : AppCompatActivity() {
             FLAG_FULLSCREEN
         )
 
-        val typeface = Typeface.createFromAsset(assets,"carbon bl.ttf" )
+        val typeface = Typeface.createFromAsset(assets, "carbon bl.ttf")
         tv_app_name.typeface = typeface
 
         Handler().postDelayed({
-            startActivity(Intent(this@SplashActivity, IntroActivity::class.java))
+            if (FirestoreClass().getCurrentUserID().isNotEmpty()) {
+                Log.d("SplashActivity", "not Empty")
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            } else {
+                Log.d("SplashActivity", "Empty")
+
+                startActivity(Intent(this@SplashActivity, IntroActivity::class.java))
+            }
             finish()
-        },1500)
+        }, 1500)
     }
 }

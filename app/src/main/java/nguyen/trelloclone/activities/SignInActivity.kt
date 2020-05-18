@@ -50,8 +50,8 @@ class SignInActivity : BaseActivity() {
     fun signInSuccess(user: User) {
         hideProgressDialog()
         Toast.makeText(this, "Successful", Toast.LENGTH_LONG).show()
-        auth.signOut()
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     private fun signIn() {
