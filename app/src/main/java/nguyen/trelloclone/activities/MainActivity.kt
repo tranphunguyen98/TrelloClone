@@ -1,7 +1,9 @@
 package nguyen.trelloclone.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
@@ -13,7 +15,9 @@ import nguyen.trelloclone.firebase.FirestoreClass
 import nguyen.trelloclone.models.User
 
 class MainActivity : BaseActivity() {
-
+    companion object {
+        const val MY_PROFILE_REQUEST_CODE: Int = 11
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,7 +29,8 @@ class MainActivity : BaseActivity() {
         nav_view.setNavigationItemSelectedListener {menu ->
             when(menu.itemId) {
                 R.id.nav_my_profile -> {
-                    startActivity(Intent(this,MyProfileActivity::class.java))
+                    startActivityForResult(Intent(this,MyProfileActivity::class.java),
+                    MY_PROFILE_REQUEST_CODE)
                 }
                 R.id.nav_sign_out -> {
                     FirebaseAuth.getInstance().signOut()
@@ -37,6 +42,15 @@ class MainActivity : BaseActivity() {
                 }
             }
             true
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK && requestCode == MY_PROFILE_REQUEST_CODE) {
+            FirestoreClass().loadUserData(this)
+        } else {
+            Log.e("Cancelled", "Cancelled")
         }
     }
 
