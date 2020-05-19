@@ -2,6 +2,7 @@ package nguyen.trelloclone.firebase
 
 import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -14,6 +15,24 @@ import nguyen.trelloclone.utils.Constants
 
 class FirestoreClass {
     private val fireStore = FirebaseFirestore.getInstance()
+
+    fun updateUserProfileData(activity:MyProfileActivity, userHashMap: HashMap<String, Any>) {
+        fireStore.collection(Constants.USERS)
+            .document(getCurrentUserID())
+            .update(userHashMap)
+            .addOnSuccessListener {
+                Toast.makeText(activity, "Updated successfully!", Toast.LENGTH_LONG).show()
+
+                activity.profileUpdateSuccess()
+            }.addOnFailureListener {e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while creating a board.",
+                    e
+                )
+            }
+    }
 
     fun loadUserData(activity: Activity) {
         fireStore.collection(Constants.USERS)

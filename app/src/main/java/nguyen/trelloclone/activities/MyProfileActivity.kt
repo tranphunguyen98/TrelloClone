@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_my_profile.*
 import nguyen.trelloclone.R
 import nguyen.trelloclone.firebase.FirestoreClass
 import nguyen.trelloclone.models.User
+import nguyen.trelloclone.utils.Constants
 import java.io.IOException
 
 class MyProfileActivity : BaseActivity() {
@@ -30,6 +31,8 @@ class MyProfileActivity : BaseActivity() {
     }
 
     private var selectedImageFileUri: Uri? = null
+    private var profileImageUrl = ""
+    private lateinit var userDetails: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +59,13 @@ class MyProfileActivity : BaseActivity() {
         }
 
         btn_update.setOnClickListener {
-            uploadUserImage()
+            if(selectedImageFileUri != null) {
+                uploadUserImage()
+            } else {
+                showProgressDialog(resources.getString(R.string.please_wait))
+
+                updateUserProfileData()
+            }
         }
     }
 
@@ -99,6 +108,28 @@ class MyProfileActivity : BaseActivity() {
         }
     }
 
+   fun profileUpdateSuccess() {
+       hideProgressDialog()
+   }
+
+    private fun updateUserProfileData() {
+        val userHashMap = HashMap<String, Any>()
+
+        if(profileImageUrl.isNotEmpty() && profileImageUrl != userDetails.image) {
+            userHashMap[Constants.IMAGE] = profileImageUrl
+        }
+
+        if(et_name.text.toString() != userDetails.name) {
+            userHashMap[Constants.NAME] = et_name.text.toString()
+        }
+
+        if (et_mobile.text.toString() != userDetails.mobile.toString()) {
+            userHashMap[Constants.MOBILE] = et_mobile.text.toString().toLong()
+        }
+
+        FirestoreClass().updateUserProfileData(this, userHashMap)
+    }
+
     private fun showImageChooser() {
         val galleryIntent = Intent(
             Intent.ACTION_PICK,
@@ -117,6 +148,7 @@ class MyProfileActivity : BaseActivity() {
     }
 
     fun setDataUserOnUI(user: User) {
+        userDetails = user
 
         Glide.with(this)
             .load(user.image)
@@ -147,6 +179,9 @@ class MyProfileActivity : BaseActivity() {
                     taskSnapshot.metadata?.reference?.downloadUrl
                         ?.addOnSuccessListener { uri ->
                             Log.e("Downloadable Image URL", uri.toString())
+                            profileImageUrl = uri.toString()
+
+                            updateUserProfileData()
                         }
                         ?.addOnFailureListener {exception ->
                             Toast.makeText(
