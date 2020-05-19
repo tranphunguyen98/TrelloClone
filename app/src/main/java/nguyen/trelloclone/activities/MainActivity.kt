@@ -43,6 +43,10 @@ class MainActivity : BaseActivity() {
             }
             true
         }
+
+        fab_create_board.setOnClickListener {
+            startActivity(Intent(this,CreateBoardActivity::class.java))
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
