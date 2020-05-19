@@ -8,22 +8,28 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_my_profile.*
 import nguyen.trelloclone.R
 import nguyen.trelloclone.firebase.FirestoreClass
 import nguyen.trelloclone.models.User
 import java.io.IOException
 
-class MyProfileActivity : AppCompatActivity() {
+class MyProfileActivity : BaseActivity() {
 
     companion object {
         private const val READ_STORAGE_PERMISSION_CODE = 1
         private const val PICK_IMAGE_REQUEST_CODE = 2
     }
+
+    private var selectedImageFileUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +53,10 @@ class MyProfileActivity : AppCompatActivity() {
                     READ_STORAGE_PERMISSION_CODE
                 )
             }
+        }
+
+        btn_update.setOnClickListener {
+            uploadUserImage()
         }
     }
 
@@ -74,10 +84,12 @@ class MyProfileActivity : AppCompatActivity() {
             && requestCode == PICK_IMAGE_REQUEST_CODE
             && data!!.data != null
         ) {
+            selectedImageFileUri = data.data
+
             try {
                 Glide
                     .with(this@MyProfileActivity)
-                    .load(Uri.parse(data.data.toString()))
+                    .load(Uri.parse(selectedImageFileUri.toString()))
                     .centerCrop()
                     .placeholder(R.drawable.ic_user_place_holder)
                     .into(iv_profile_user_image)
@@ -117,5 +129,48 @@ class MyProfileActivity : AppCompatActivity() {
         if (user.mobile != 0L) {
             et_mobile.setText(user.mobile.toString())
         }
+    }
+
+    private fun uploadUserImage() {
+        showProgressDialog(resources.getString(R.string.please_wait))
+
+        selectedImageFileUri?.also {
+            val sRef: StorageReference =
+                FirebaseStorage
+                    .getInstance()
+                    .reference
+                    .child("USER_IMAGE" + System.currentTimeMillis() + "." + getFileExtension(it))
+
+            sRef.putFile(it)
+                .addOnSuccessListener { taskSnapshot ->
+                    hideProgressDialog()
+                    taskSnapshot.metadata?.reference?.downloadUrl
+                        ?.addOnSuccessListener { uri ->
+                            Log.e("Downloadable Image URL", uri.toString())
+                        }
+                        ?.addOnFailureListener {exception ->
+                            Toast.makeText(
+                                this@MyProfileActivity,
+                                exception.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            hideProgressDialog()
+                        }
+                }
+                .addOnFailureListener{exception ->
+                    Toast.makeText(
+                        this@MyProfileActivity,
+                        exception.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    hideProgressDialog()
+                }
+        }
+    }
+
+    private fun getFileExtension(uri: Uri): String? {
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri))
     }
 }
