@@ -21,14 +21,10 @@ import nguyen.trelloclone.R
 import nguyen.trelloclone.firebase.FirestoreClass
 import nguyen.trelloclone.models.User
 import nguyen.trelloclone.utils.Constants
+import nguyen.trelloclone.utils.Utils
 import java.io.IOException
 
 class MyProfileActivity : BaseActivity() {
-
-    companion object {
-        private const val READ_STORAGE_PERMISSION_CODE = 1
-        private const val PICK_IMAGE_REQUEST_CODE = 2
-    }
 
     private var selectedImageFileUri: Uri? = null
     private var profileImageUrl = ""
@@ -48,18 +44,18 @@ class MyProfileActivity : BaseActivity() {
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                showImageChooser()
+                Utils.showImageChooser(this)
             } else {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    READ_STORAGE_PERMISSION_CODE
+                    Constants.READ_STORAGE_PERMISSION_CODE
                 )
             }
         }
 
         btn_update.setOnClickListener {
-            if(selectedImageFileUri != null) {
+            if (selectedImageFileUri != null) {
                 uploadUserImage()
             } else {
                 showProgressDialog(resources.getString(R.string.please_wait))
@@ -74,9 +70,9 @@ class MyProfileActivity : BaseActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == READ_STORAGE_PERMISSION_CODE) {
+        if (requestCode == Constants.READ_STORAGE_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showImageChooser()
+                Utils.showImageChooser(this)
             } else {
                 Toast.makeText(
                     this,
@@ -90,7 +86,7 @@ class MyProfileActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK
-            && requestCode == PICK_IMAGE_REQUEST_CODE
+            && requestCode == Constants.PICK_IMAGE_REQUEST_CODE
             && data!!.data != null
         ) {
             selectedImageFileUri = data.data
@@ -108,20 +104,20 @@ class MyProfileActivity : BaseActivity() {
         }
     }
 
-   fun profileUpdateSuccess() {
-       hideProgressDialog()
-       setResult(Activity.RESULT_OK)
-       finish()
-   }
+    fun profileUpdateSuccess() {
+        hideProgressDialog()
+        setResult(Activity.RESULT_OK)
+        finish()
+    }
 
     private fun updateUserProfileData() {
         val userHashMap = HashMap<String, Any>()
 
-        if(profileImageUrl.isNotEmpty() && profileImageUrl != userDetails.image) {
+        if (profileImageUrl.isNotEmpty() && profileImageUrl != userDetails.image) {
             userHashMap[Constants.IMAGE] = profileImageUrl
         }
 
-        if(et_name.text.toString() != userDetails.name) {
+        if (et_name.text.toString() != userDetails.name) {
             userHashMap[Constants.NAME] = et_name.text.toString()
         }
 
@@ -132,14 +128,6 @@ class MyProfileActivity : BaseActivity() {
         FirestoreClass().updateUserProfileData(this, userHashMap)
     }
 
-    private fun showImageChooser() {
-        val galleryIntent = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        )
-
-        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST_CODE)
-    }
 
     private fun setUpActionBar() {
         setSupportActionBar(toolbar_my_profile_activity)
@@ -173,7 +161,12 @@ class MyProfileActivity : BaseActivity() {
                 FirebaseStorage
                     .getInstance()
                     .reference
-                    .child("USER_IMAGE" + System.currentTimeMillis() + "." + getFileExtension(it))
+                    .child(
+                        "USER_IMAGE" + System.currentTimeMillis() + "." + Utils.getFileExtension(
+                            this,
+                            it
+                        )
+                    )
 
             sRef.putFile(it)
                 .addOnSuccessListener { taskSnapshot ->
@@ -185,7 +178,7 @@ class MyProfileActivity : BaseActivity() {
 
                             updateUserProfileData()
                         }
-                        ?.addOnFailureListener {exception ->
+                        ?.addOnFailureListener { exception ->
                             Toast.makeText(
                                 this@MyProfileActivity,
                                 exception.message,
@@ -195,7 +188,7 @@ class MyProfileActivity : BaseActivity() {
                             hideProgressDialog()
                         }
                 }
-                .addOnFailureListener{exception ->
+                .addOnFailureListener { exception ->
                     Toast.makeText(
                         this@MyProfileActivity,
                         exception.message,
@@ -207,7 +200,5 @@ class MyProfileActivity : BaseActivity() {
         }
     }
 
-    private fun getFileExtension(uri: Uri): String? {
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri))
-    }
+
 }
