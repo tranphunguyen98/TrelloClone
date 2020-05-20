@@ -13,17 +13,21 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 import nguyen.trelloclone.R
 import nguyen.trelloclone.firebase.FirestoreClass
 import nguyen.trelloclone.models.User
+import nguyen.trelloclone.utils.Constants
 
 class MainActivity : BaseActivity() {
     companion object {
         const val MY_PROFILE_REQUEST_CODE: Int = 11
     }
+
+    private lateinit var userName: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         FirestoreClass().loadUserData(this)
-
+        FirestoreClass().getBoardsList(this)
         setUpActionBar()
 
         nav_view.setNavigationItemSelectedListener {menu ->
@@ -45,7 +49,10 @@ class MainActivity : BaseActivity() {
         }
 
         fab_create_board.setOnClickListener {
-            startActivity(Intent(this,CreateBoardActivity::class.java))
+            val intent = Intent(this,CreateBoardActivity::class.java)
+            intent.putExtra(Constants.NAME, userName)
+
+            startActivity(intent)
         }
     }
 
@@ -67,6 +74,8 @@ class MainActivity : BaseActivity() {
     }
 
     fun updateNavigationUserDetails(user: User) {
+        userName = user.name
+
         Glide.with(this@MainActivity)
             .load(user.image)
             .centerCrop()

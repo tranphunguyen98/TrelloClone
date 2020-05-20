@@ -2,8 +2,9 @@ package nguyen.trelloclone.utils
 
 object Constants {
     // Firebase Constants
-    // This is used for the collection name for USERS.
     const val USERS: String = "users"
+    const val BOARDS: String = "boards"
+    const val ASSIGNED_TO = "assignedTo"
 
     // Firebase database field names
     const val IMAGE: String = "image"
