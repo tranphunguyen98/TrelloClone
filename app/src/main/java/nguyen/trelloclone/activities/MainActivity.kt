@@ -4,14 +4,19 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import nguyen.trelloclone.R
+import nguyen.trelloclone.adapters.BoardItemsAdapter
 import nguyen.trelloclone.firebase.FirestoreClass
+import nguyen.trelloclone.models.Board
 import nguyen.trelloclone.models.User
 import nguyen.trelloclone.utils.Constants
 
@@ -70,6 +75,21 @@ class MainActivity : BaseActivity() {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
             doubleBackToExit()
+        }
+    }
+
+    fun populateBoardsListToUI(listBoard: List<Board>) {
+        if(listBoard.isNotEmpty()) {
+            with(rv_boards_list) {
+                visibility = View.VISIBLE
+                layoutManager = LinearLayoutManager(this@MainActivity)
+                adapter = BoardItemsAdapter(listBoard)
+                hasFixedSize()
+            }
+            tv_no_boards_available.visibility = View.GONE
+        } else {
+            rv_boards_list.visibility = View.GONE
+            tv_no_boards_available.visibility = View.VISIBLE
         }
     }
 

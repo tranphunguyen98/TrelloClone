@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import nguyen.trelloclone.R
 import nguyen.trelloclone.activities.*
 import nguyen.trelloclone.models.Board
 import nguyen.trelloclone.models.User
@@ -15,7 +16,7 @@ class FirestoreClass {
     private val fireStore = FirebaseFirestore.getInstance()
 
     fun getBoardsList(activity: MainActivity) {
-
+        activity.showProgressDialog(activity.resources.getString(R.string.please_wait))
         fireStore.collection(Constants.BOARDS)
             .whereArrayContains(Constants.ASSIGNED_TO, getCurrentUserID())
             .get()
@@ -26,17 +27,16 @@ class FirestoreClass {
                 for (i in document.documents) {
 
                     val board = i.toObject(Board::class.java)!!
-                   // board.documentId = i.id
+                    board.id = i.id
 
                     boardsList.add(board)
                 }
 
                 Log.e("boardList", boardsList.size.toString())
-                // Here pass the result to the base activity.
-               // activity.populateBoardsListToUI(boardsList)
+                activity.populateBoardsListToUI(boardsList)
+                activity.hideProgressDialog()
             }
             .addOnFailureListener { e ->
-
                 activity.hideProgressDialog()
                 Log.e(activity.javaClass.simpleName, "Error while creating a board.", e)
             }
